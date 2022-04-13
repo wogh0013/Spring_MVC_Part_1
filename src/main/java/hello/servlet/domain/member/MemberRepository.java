@@ -19,6 +19,7 @@ public class MemberRepository {
 
     //무조건 이 메서드로 조회해야 함
     public static MemberRepository getInstance(){
+
         return instance;
     }
 
