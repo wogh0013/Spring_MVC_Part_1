@@ -34,6 +34,7 @@ public class MemberRepository {
     }
 
     public Member findById(Long id){
+
         return store.get(id);
     }
 
@@ -44,6 +45,7 @@ public class MemberRepository {
 
     //테스트할 때 사용, store를 다 날려버림
     public void clearStore(){
+
         store.clear();
     }
 }
