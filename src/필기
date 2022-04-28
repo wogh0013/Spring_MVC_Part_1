@@ -150,14 +150,72 @@ FrontController 패턴
 
 
 
+ㅡㅡㅡㅡㅡ
+Jar : 스프링 부트 사용, 내장 서버(톰캣 등)에 최적화, webapp 경로 사용 X
+War : JSP 사용, 내장 서버 + 외부 서버 배포
+
+@Controller
+ - 반환값이 String이면 '뷰 이름'으로 인식한다. -> 뷰를 찾고 뷰가 렌더링됨
+@RestController
+ - 반환값으로 '뷰'를 찾는 것이 아니라, HTTP 메시지 바디에 바로 입력됨
+ - 실행결과로 메시지를 받을 수 있음
+
+로그
+ - 실무에서는 System.out.println()으로 출력 X -> 로깅 라이브러리 활용
+ - 로깅 라이브러리
+  1) 인터페이스 : SLF4J
+  2)  구현체    : Logback
+ - hello.springmvc 패키지와 그 하위 로그 레벨 설정, 기본이 info임
+   로그 레벨 : trace - debug(개발 단계) - info(운영 단계) - warn - error
+   logging.level.hello.springmvc=info
+ - 올바른 로그 사용법
+  log.debug("data={}", data)     (O)
+  log.debug("data=" + data)      (X) -> 더하기로 처리돼서 의미 없는 연산 발생
+ - 로그 사용 시 장점
+  1) 상황에 따라 로그 레벨을 조절할 수 있다.
+  2) 콘솔, 파일, 네트워크 등 로그를 별도의 위치에 남길 수 있다.(분할도 가능)
+  3) 내부 버퍼링, 멀티 쓰레드 등 성능이 좋아서 실무에서는 반드시 로그 사용
+  4) 부가 정보(쓰레드 정보, 클래스 이름)를 볼 수 있고, 출력 모양 조정 가능
+
+경로 변수(Path Variable)
+ - url 자체에 값이 들어가있는 것
 
 
+클라이언트에서 서버로 요청 데이터를 전달할 때 사용하는 3가지 방법
+ 1. GET - 쿼리 파라미터
+  - 메시지 바디 없이, URL의 쿼리 파라미터에 데이터를 포함
+  - 검색, 필터 등에 사용
+ 2. POST - HTML Form
+  - 메시지 바디에 쿼리 파라미터 형식으로 전달
+  - 회원가입, 상품주문 등에 사용
+ 3. HTTP message body에 데이터를 직접 담아서 사용
+  - HTTP API에서 주로 사용(JSON, XML, TEXT)
+  - 데이터 형식은 주로 JSON 사용
+  - POST, PUT, PATCH
 
+HTTP 요청 파라미터 (@RequestParam)
 
+HTTP 요청 파라미터 (@ModelAttribute)
+ 1) 요청 파라미터를 받아서 필요한 객체를 만듦
+ 2) 그 객체에 값을 넣어줌
+  -> 이 두 가지를 완전히 자동화해주는 것 : @ModelAttribute
 
+@ModelAttribute 기능
+ 1) 객체 생성
+ 2) 요청 파라미터 이름으로 객체의 프로퍼티(setXxx, getXxx..)를 찾음
+ 3) setter를 호출해서 파라미터의 값을 입력(바인딩)
 
+생략이 된다면 @RequestParam인지 @ModelAttribute인지 어떻게 알까?
+String, int, Integer같은 단순 타입 -> @RequestParam
+그 외 -> @ModelAttribute
 
+@RequestBody
+ - HTTP 메시지 바디 정보를 편리하게 조회 가능
+ - 헤더 정보 : HttpEntity 또는 RequestHeader 사용
 
+- 요청 파라미터 조회 : @RequestParam, @ModelAttribute
+- HTTP 메시지 바디 직접 조회 : @RequestBody
+- 응답 결과를 HTTP 메시지 바디에 직접 담아서 전달 : @ResponseBody 
 
 
 
